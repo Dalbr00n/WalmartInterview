@@ -13,4 +13,4 @@
 
 # To compile: g++ -std=c++11 main.cpp -o main\
 # To run: ./main [Path-to-Input-file]
-# NOTE: if you filepath includes whitespace, you may need to use the '' characters to compile correctly
+# NOTE: if your filepath includes whitespace, you may need to use the '' characters to compile correctly
