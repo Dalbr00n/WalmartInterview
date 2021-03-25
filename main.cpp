@@ -113,6 +113,11 @@ int main(int argc, char* argv[]){
                 }
                 //if the party was reserved, continue to next reservation
                 if(reserved == true) break;
+
+                if(k == 9 && reserved == false){
+                    cout << "Party not seated" << endl;
+                    output << reservation << "  PARTY NOT SEATED, NO SEATING AVAILABLE" << endl;
+                }
             }
         }
     }
