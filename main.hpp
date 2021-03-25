@@ -1,6 +1,7 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
+//Basic file libraries for usage in main.cpp
 #include <stdio.h>
 #include <iomanip>
 #include <iostream>
