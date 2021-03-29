@@ -36,7 +36,9 @@ int main(int argc, char* argv[]){
             seats = line.substr(line.find(' '));
             nseats = stoi(seats);
 
-            for(int k = row_full; k < 10; k++){                
+            for(int k = row_full; k < 10; k++){   
+                int firstRow = (k == 0) ? 1 : 0;
+                int lastRow  = ((k - 19) == 0) ? 1 : 0;             
                 for(int i = 0; i < 20; i++){
                     logic = 0;
                     //if there are not enough available seats continue to next row
@@ -50,64 +52,25 @@ int main(int argc, char* argv[]){
                         continue;
                     }
                     else{
-                        //This section is split into three subsections. One main case and two edgecases
-                        //for the first and last rows
-                        if(k == 0){
-                            //check if the current seat and seat in next row is open for length of party
-                            for(int j = 0; j < nseats; j++) logic |= (seat_open[k][i + j] | seat_open[k + 1][i + j]);
-                            if(logic == 0) {
-                                //output name of reservation
-                                output << reservation << " ";
-                                for(int j = 0; j < nseats; j++) {
-                                    seat_open[k][i + j] = 1;
-                                    //write to output as ASCII character code, A = 65
-                                    uint8_t row = 65 + k;
-                                    output << row << (i + j  + 1);
-                                    if(j < nseats - 1) output << ",";
-                                }
-                                output << endl;
-                                //mark the party as reserved
-                                reserved = true;
-                                break;
+                        //check if the current seat, the seat in previous row, and the seat in next row is open for length of party
+                        if(firstRow) for(int j = 0; j < nseats; j ++) logic |= (seat_open[k][i + j] | seat_open[k + 1][i + j]);
+                        else if(lastRow) for(int j = 0; j < nseats; j ++) logic |= (seat_open[k][i + j] | seat_open[k - 1][i + j]);
+                        else for(int j = 0; j < nseats; j ++) logic |= (seat_open[k][i + j] | seat_open[k + 1][i + j] | seat_open[k - 1][i + j]);
+                        
+                        if(logic == 0){
+                            //output name of reservation
+                            output << reservation << " ";
+                            for(int j = 0; j < nseats; j++) {
+                                seat_open[k][i + j] = 1;
+                                //write to output as ASCII character code, A = 65
+                                uint8_t row = 65 + k;
+                                output << row << (i + j  + 1);
+                                if(j < nseats - 1) output << ",";
                             }
-                        }
-                        else if(k == 19){
-                            //check if the current seat and seat in previous row is open for length of party
-                            for(int j = 0; j < nseats; j ++) logic |= (seat_open[k][i + j] | seat_open[k - 1][i + j]);
-                            if(logic == 0) {
-                                //output name of reservation
-                                output << reservation << " ";
-                                for(int j = 0; j < nseats; j++) {
-                                    seat_open[k][i + j] = 1;
-                                    //write to output as ASCII character code, A = 65
-                                    uint8_t row = 65 + k;
-                                    output << row << (i + j  + 1);
-                                    if(j < nseats - 1) output << ",";
-                                }
-                                output << endl;
-                                //mark the party as reserved
-                                reserved = true;
-                                break;
-                            }
-                        }
-                        else{
-                            //check if the current seat, the seat in previous row, and the seat in next row is open for length of party
-                            for(int j = 0; j < nseats; j ++) logic |= (seat_open[k][i + j] | seat_open[k + 1][i + j] | seat_open[k - 1][i + j]);
-                            if(logic == 0){
-                                //output name of reservation
-                                output << reservation << " ";
-                                for(int j = 0; j < nseats; j++) {
-                                    seat_open[k][i + j] = 1;
-                                    //write to output as ASCII character code, A = 65
-                                    uint8_t row = 65 + k;
-                                    output << row << (i + j  + 1);
-                                    if(j < nseats - 1) output << ",";
-                                }
-                                output << endl;
-                                //mark the party as reserved
-                                reserved = true;
-                                break;
-                            }
+                            output << endl;
+                            //mark the party as reserved
+                            reserved = true;
+                            break;
                         }
                     }
                 }
