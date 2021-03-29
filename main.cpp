@@ -38,7 +38,7 @@ int main(int argc, char* argv[]){
 
             for(int k = row_full; k < 10; k++){   
                 int firstRow = (k == 0) ? 1 : 0;
-                int lastRow  = ((k - 19) == 0) ? 1 : 0;             
+                int lastRow  = (k == 19) ? 1 : 0;             
                 for(int i = 0; i < 20; i++){
                     logic = 0;
                     //if there are not enough available seats continue to next row
